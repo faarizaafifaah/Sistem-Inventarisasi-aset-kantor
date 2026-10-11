@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventaris Aset | PT. Zeea</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">Z</div>
+            <div><strong>PT. Zeea</strong><small>Asset Management</small></div>
+        </div>
+
+        <p class="menu-label">MENU UTAMA</p>
+        <nav>
+            <button class="nav-button active" data-page="dashboard">▦ Dashboard</button>
+            <button class="nav-button" data-page="aset">▤ Data Aset</button>
+            <button class="nav-button" data-page="disposal">↗ Disposal</button>
+            <button class="nav-button" data-page="rusak">⚠ Aset Rusak</button>
+            <button class="nav-button" data-page="kategori">▧ Kategori</button>
+        </nav>
+
+        <div class="sidebar-footer">
+            <span class="status-dot"></span> Sistem Inventaris Aset
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">MANAJEMEN ASET KANTOR</p>
+                <h1 id="page-title">Dashboard</h1>
+            </div>
+            <div class="profile">
+                <div class="avatar">Z</div>
+                <div><strong>PT. Zeea</strong><small>Administrator</small></div>
+            </div>
+        </header>
+
+        <div id="notice" class="notice" hidden></div>
+
+        <section id="dashboard" class="page">
+            <div class="welcome">
+                <div>
+                    <p class="eyebrow">SELAMAT DATANG 👋</p>
+                    <h2>Kelola aset lebih mudah.</h2>
+                    <p>Pantau aset kantor PT. Zeea dalam satu tempat.</p>
+                </div>
+                <div class="welcome-art">📦</div>
+            </div>
+
+            <div class="stats">
+                <article class="stat-card purple">
+                    <span>Total Aset</span><div class="stat-icon">▤</div>
+                    <h2 id="total-aset">0</h2><small>Seluruh data aset</small>
+                </article>
+                <article class="stat-card green">
+                    <span>Aset Baik</span><div class="stat-icon">✓</div>
+                    <h2 id="total-baik">0</h2><small>Siap digunakan</small>
+                </article>
+                <article class="stat-card orange">
+                    <span>Aset Rusak</span><div class="stat-icon">⚠</div>
+                    <h2 id="total-rusak">0</h2><small>Perlu pemeriksaan</small>
+                </article>
+                <article class="stat-card pink">
+                    <span>Disposal</span><div class="stat-icon">↗</div>
+                    <h2 id="total-disposal">0</h2><small>Aset dilepas</small>
+                </article>
+            </div>
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <div><h3>Pengingat Masa Manfaat</h3>
+                    <p>Aset yang mendekati atau melewati masa manfaatnya.</p></div>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr>
+                            <th>Kode Aset</th><th>Nama Aset</th>
+                            <th>Akhir Masa Manfaat</th><th>Status</th>
+                        </tr></thead>
+                        <tbody id="expiry-table">
+                            <tr><td colspan="4" class="empty">Memuat data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="aset" class="page" hidden>
+            <div class="section-heading">
+                <div><h2>Data Aset</h2><p>Kelola semua aset milik perusahaan.</p></div>
+                <button class="primary-button" id="add-aset">＋ Tambah Aset</button>
+            </div>
+            <div class="panel">
+                <div class="table-wrap">
+                    <table><thead><tr>
+                        <th>Kode</th><th>Nama Aset</th><th>Kategori</th>
+                        <th>Lokasi</th><th>Tanggal Perolehan</th>
+                        <th>Masa Manfaat</th><th>Kondisi</th><th>Aksi</th>
+                    </tr></thead><tbody id="aset-table"></tbody></table>
+                </div>
+            </div>
+        </section>
+
+        <section id="disposal" class="page" hidden>
+            <div class="section-heading">
+                <div><h2>Disposal Aset</h2><p>Catat aset yang dilepas dari inventaris.</p></div>
+                <button class="primary-button" id="add-disposal">＋ Catat Disposal</button>
+            </div>
+            <div class="panel"><div class="table-wrap">
+                <table><thead><tr>
+                    <th>Kode Aset</th><th>Nama Aset</th><th>Tanggal</th>
+                    <th>Alasan</th><th>Nilai Disposal</th>
+                </tr></thead><tbody id="disposal-table"></tbody></table>
+            </div></div>
+        </section>
+
+        <section id="rusak" class="page" hidden>
+            <div class="section-heading">
+                <div><h2>Aset Rusak</h2><p>Daftar aset yang membutuhkan pemeriksaan.</p></div>
+                <button class="primary-button" id="add-rusak">＋ Laporkan Kerusakan</button>
+            </div>
+            <div class="panel"><div class="table-wrap">
+                <table><thead><tr>
+                    <th>Kode</th><th>Nama Aset</th><th>Lokasi</th>
+                    <th>Tanggal Perolehan</th><th>Keterangan</th>
+                </tr></thead><tbody id="rusak-table"></tbody></table>
+            </div></div>
+        </section>
+
+        <section id="kategori" class="page" hidden>
+            <div class="section-heading">
+                <div><h2>Kategori Aset</h2><p>Kelompokkan aset berdasarkan jenisnya.</p></div>
+                <button class="primary-button" id="add-kategori">＋ Tambah Kategori</button>
+            </div>
+            <div id="kategori-list" class="category-grid"></div>
+        </section>
+
+        <footer>© 2026 PT. Zeea · Sistem Inventarisasi Aset Kantor</footer>
+    </main>
+
+    <dialog id="form-dialog">
+        <form id="data-form">
+            <div class="dialog-heading">
+                <div><p class="eyebrow">PT. ZEEA</p><h2 id="form-title">Tambah Data</h2></div>
+                <button type="button" id="close-dialog" class="close-button">×</button>
+            </div>
+            <div id="form-fields" class="form-fields"></div>
+            <div class="dialog-actions">
+                <button type="button" id="cancel-form" class="secondary-button">Batal</button>
+                <button type="submit" class="primary-button">Simpan Data</button>
+            </div>
+        </form>
+    </dialog>
+</body>
+</html>
