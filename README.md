@@ -4,7 +4,7 @@ Sistem Inventaris Aset PT. Zeea adalah aplikasi web sederhana yang dirancang unt
 
 Aplikasi ini menggunakan **HTML, CSS, JavaScript, dan Supabase PostgreSQL** sebagai database.
 
-Demo web: https://faarizaafifaah.github.io/Sistem-inventarisasi-/
+Demo web: (https://faarizaafifaah.github.io/Sistem-Inventarisasi-aset-kantor/)
 
 ## ✨ Fitur Utama
 
